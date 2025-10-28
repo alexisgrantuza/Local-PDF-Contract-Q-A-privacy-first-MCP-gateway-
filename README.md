@@ -1,4 +1,4 @@
-Nice — let’s fully flesh out the **Local PDF / Contract Q&A (privacy-first, MCP gateway)** project so you can build a working MVP in one day. I’ll give: goal, architecture, exact stack choices, step-by-step implementation plan with runnable snippets, folder layout, API design, prompt templates, privacy/security notes, testing checklist, and a tight 1-day timeline.
+ **Local PDF / Contract Q&A (privacy-first, MCP gateway)** project so you can build a working MVP in one day. I’ll give: goal, architecture, exact stack choices, step-by-step implementation plan with runnable snippets, folder layout, API design, prompt templates, privacy/security notes, testing checklist, and a tight 1-day timeline.
 
 # 1) Project goal (one-sentence)
 
