@@ -4,7 +4,7 @@ from sentence_transformers import SentenceTransformer
 import faiss
 
 
-MODEL_NAME = os.environ.get("EMBED_MODEL", "all-MiniLM-L6-v2")
+MODEL_NAME = os.getenv("EMBED_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
 
 
 class EmbeddingIndex:
