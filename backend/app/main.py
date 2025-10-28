@@ -11,7 +11,7 @@ from app.mcp_client import mcp_generate
 from app.storage import save_index, load_index, ensure_data_dir
 
 
-DATA_DIR = os.environ.get("DATA_DIR", "/data")
+DATA_DIR = os.getenv("DATA_DIR", "/data")
 ensure_data_dir(DATA_DIR)
 
 
@@ -68,7 +68,6 @@ async def ingest(file: UploadFile = File(...)):
 
   return {"doc_id": doc_id, "status": "indexed", "pages": len(pages)}
 
-
 @app.post("/query")
 async def query(req: QueryRequest):
   doc_id = req.doc_id
@@ -90,17 +89,19 @@ async def query(req: QueryRequest):
   # Build prompt
   context_lines = []
   for i, r in enumerate(results, start=1):
-    snippet = r["text"].strip().replace("", " ")
+    snippet = r["text"].strip().replace("\n", " ")
     context_lines.append(f"[{i}] (Page {r['page']}) {snippet}")
 
 
   system_instructions = (
-  "System: You are a contract assistant. Use ONLY the provided CONTEXT to answer the user's question. "
-  "If the answer cannot be found in the context, reply: \"I don't know.\" "
-  "Provide a concise 1-3 sentence answer. Then include a SOURCES section listing page numbers and short snippets used.")
+    "You are a contract assistant. Use ONLY the provided CONTEXT to answer the user's question. "
+    "If the answer cannot be found in the context, reply: \"I don't know.\" "
+    "Provide a concise 1-3 sentence answer. Then include a SOURCES section listing page numbers and short snippets used.\n\n")
 
 
-  prompt = system_instructions + "Context:" + " ".join(context_lines) + f"Question: {req.question}Answer: "
+  prompt = (system_instructions + 
+           "CONTEXT:\n" + "\n".join(context_lines) + "\n\n" +
+           f"Question: {req.question}\n\nAnswer:")
 
 
   mcp_resp = mcp_generate(prompt)
