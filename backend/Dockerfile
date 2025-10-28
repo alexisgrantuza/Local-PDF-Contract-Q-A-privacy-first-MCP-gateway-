@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -15,12 +15,8 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 
-# Pre-download the embedding model at build time to speed runtime
-RUN python - <<PY
-from sentence_transformers import SentenceTransformer
-SentenceTransformer('all-MiniLM-L6-v2')
-print('model cached')
-PY
+# Create data directory
+RUN mkdir -p /app/data
 
 
 COPY ./app /app/app
